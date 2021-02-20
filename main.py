@@ -58,6 +58,22 @@ def save_to_file():
                 website_input.delete(0, END)
                 password_input.delete(0, END)
 
+# ---------------------------- Search For Passwords ------------------------------- #
+def search():
+    website = website_input.get()
+    try:
+        with open('data.json') as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found, please add data")
+    else:
+        if website in data:
+                email = data[website]["email"]
+                password = data[website]["password"]
+                messagebox.showinfo(title=website, message=f"Your Details: \nEmail: {email} \nPassword: {password} ")
+        else:
+            messagebox.showinfo(title="Error", message=f"No Details for {website} exists ")
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -74,13 +90,13 @@ canvas.grid(column=1, row=0)
 # --------------- website Label --------------- #
 website_label = Label(text="Website: ")
 website_label.grid(column= 0, row=1)
-website_input = Entry(width=36)
+website_input = Entry(width=21)
 website_input.focus()
-website_input.grid(column= 1, row=1, columnspan=2)
+website_input.grid(column= 1, row=1)
 # --------------- Email/Username Label --------------- #
 username_label = Label(text="Email/Username: ")
 username_label.grid(column= 0, row=2)
-username_input = Entry(width=36)
+username_input = Entry(width=38)
 username_input.insert(END, "ayman@email.com")
 username_input.grid(column= 1, row=2, columnspan=2)
 # --------------- Password Label --------------- #
@@ -91,6 +107,9 @@ password_input.grid(column= 1, row=3)
 # --------------- Generate Button --------------- #
 generate_button = Button(text="Generate Password", command= generate_password)
 generate_button.grid(column= 2, row=3)
+# --------------- Search Button --------------- #
+search_button = Button(text="Search", command= search, width=13)
+search_button.grid(column= 2, row=1)
 # --------------- Add Button --------------- #
 add_button = Button(text="Add", width=36, command= save_to_file)
 add_button.grid(column= 1, row= 4, columnspan=2)
